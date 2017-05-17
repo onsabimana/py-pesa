@@ -1,0 +1,2 @@
+# py-pesa
+A python implementation of M-PESA API. A popular mobile money service in Kenya operated primarily by SAFARICOM. However variants of the same service exist in a number of countries in Africa. M-PESA is the brand owned by SAFARICOM. Other mobile money services exist under different names such MTN Mobile Money, TIGO cash etcetera etcera. There is no existing open API. This implementation attempts to create one. The inspiration for this project was derived from an earlier implementation in php by PlusPeople https://github.com/pluspeople/pesaPi
