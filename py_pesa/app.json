@@ -1,0 +1,8 @@
+{
+  "name": "PY PESA",
+  "description": "MPESA python client",
+  "image": "heroku/python",
+  "repository": "https://github.com/onsabimana/py-pesa",
+  "keywords": ["python", "django" ],
+  "addons": [ "heroku-postgresql" ]
+}
