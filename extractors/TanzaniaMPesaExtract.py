@@ -2,42 +2,34 @@ import re
 #this this file contains functions extract key important information from Tanzania MPesa payment sms
 
 #examples
-example = 'Trans. ID: 313821006060 You have sent 20GHS to 233261234567.  Your available balance is 250.67GHS.'
-
+example ='''
+Z10DN636 Confirmed.
+You have received Tsh50,000 from
+FREDRICK KIMARO
+on 27/1/14 at 1:19 PM
+New M-PESA balance is Tsh214,676
+'''
 #function to check which type of sms
-def checkTypeOfSMS(str):
-	extractKeyWord = re.match(r'(?=.*\brecieved\b)', str)
-	return
-
-#function to extract transaction number only
-def extractTransactionNo(str):
-	transactionNo = re.findall("[A-z]{5}\.\s[A-Z]{2}\:\s\d+",str)
-	transactionNo = re.findall("\d{12}",transactionNo[0])
-	transactionNo = transactionNo[0]
-	print (transactionNo)
-	return
-#function to extract amount sent
-def extractAmountSent(str):
-	allMoneyInString = re.findall("\d+\.\d+[A-Z]{3}|\d+[A-Z]{3}", example, re.I)
-	actualSentAmount = allMoneyInString[0]
-	print (actualSentAmount)
-	return
-
-#function to extract account number
-def extractRecieverAccount(str):
-	stringExact = re.findall("[a-z]{2}\s\d{12}\.", str)
-	accountNo = transactionNo = re.findall("\d{12}",stringExact[0])
-	accountNo = accountNo[0]
-	print (accountNo)
-	return
-#Function to exact available balance#function to extract account number
-def extractAvailableBal(str):
-	allMoneys = re.findall("\d+\.\d+[A-Z]{3}|\d+[A-Z]{3}", str, re.I)
-	currentBal = allMoneys[1]
-	print (currentBal)
+def checkTypeOfSMS(word, str):
+	if word in str:
+		return True
+	else:
+		False
+#function to function for recieved payment 
+def recievedMPesa(str):
+	if checkTypeOfSMS('received',str) ==True:		#check if this is for M-PESA recieved transaction
+		#1 perform extraction of reference number
+		refNo = example.partition(' ')[0]
+		print(refNo)
+		#2 perform extraction of amount recieved
+		amountRecieved = re.findall('Tsh{1}[,0-9]{1,10}',str)
+		print(amountRecieved[0])
+		#3 perform extraction of Sender's name 
+		#4 perform extraction of date recieved
+		#5 perform extraction of new balance (note that this could just be the current amount in the database + recieved in step 2 )
+	else:
+		print("Wrong function call!")
 	return
 #call my function
-extractTransactionNo(example)
-extractAmountSent(example)
-extractRecieverAccount(example)
-extractAvailableBal(example)
+recievedMPesa(example)
+	
