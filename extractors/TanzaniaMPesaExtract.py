@@ -1,6 +1,14 @@
 import re
-#this this file contains functions extract key important information from Ghana payment sms
+#this this file contains functions extract key important information from Tanzania MPesa payment sms
+
+#examples
 example = 'Trans. ID: 313821006060 You have sent 20GHS to 233261234567.  Your available balance is 250.67GHS.'
+
+#function to check which type of sms
+def checkTypeOfSMS(str):
+	extractKeyWord = re.match(r'(?=.*\brecieved\b)', str)
+	return
+
 #function to extract transaction number only
 def extractTransactionNo(str):
 	transactionNo = re.findall("[A-z]{5}\.\s[A-Z]{2}\:\s\d+",str)
