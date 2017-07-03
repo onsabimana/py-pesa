@@ -15,12 +15,13 @@ def checkTypeOfSMS(word, str):
 	if word in str:
 		return True
 	else:
-		False
+		return False
 #--------------------------------------------------------------------------------------------------------------------------------------
 	#function to extract transaction number
 def extractTransactionNo(str):
 	refNo = str.partition(' ')[0]
-	print(refNo)
+	print(refNo)		#this is just for testing/Debugging
+	return 
 #--------------------------------------------------------------------------------------------------------------------------------------
 #function to extract names
 def extractName(str):
@@ -36,13 +37,15 @@ def extractName(str):
 	fullName = nameString.group(1)
 	firstName = fullName.partition(' ')[0];  	#Then extract only the first name from string which is the first
 	lastName = fullName.partition(' ')[2] 		#Then extract only the last name from string which is the first
-	print(fullName)
+	print(fullName) #this is just for testing/Debugging
+	return 
 #--------------------------------------------------------------------------------------------------------------------------------------
 
 #function to extract amount sent or recieved 
 def extractAmountSentRecieved(str):
 	amount = re.findall('Tsh{1}[,0-9]{1,10}',str)
 	print(amount[0])
+	return
 #--------------------------------------------------------------------------------------------------------------------------------------
 def extractBalance(str):
 	#balString = re.search('balance is\s(.+?)\s|balance is\s(.+?)\.', str,re.I)
@@ -62,6 +65,7 @@ def extractDateTime(str):
 		#print(timestring)
 	fulldatetime = datestring.group(1) + ' '+timestring
 	print(fulldatetime)
+	return
 #--------------------------------------------------------------------------------------------------------------------------------------
 #SPECIFIC FUNCTIONS
 	#function to function for recieved payment 
@@ -100,8 +104,56 @@ def sendMPesa(str):
 		extractBalance(str)
 	else:
 		print("Wrong function call!")
+	return
+#Bought AIRTIME-------------------------------------------
+def buyAirtime(str):
+	transactionList =[]
+	if checkTypeOfSMS('bought',str) ==True and checkTypeOfSMS('airtime',str) ==True:		#check if this is for M-PESA buy AIRTIME transaction
+		#1 perform extraction of reference number
+		extractTransactionNo(str)
+		#2 perform extraction of amount sent using common function
+		extractAmountSentRecieved(str)
+		#3 perform extraction of date and time recieved
+		extractDateTime(str)
+		#4) Extract current balance
+		extractBalance(str)
+	else:
+		print("Wrong function call!")
+	return
 
+#Function for you buy Airtime for someone else
+def buyAirtime4someone(str):
+	if checkTypeOfSMS('airtime',str) ==True and checkTypeOfSMS('for',str) ==True:
+		#1 perform extraction of reference number
+		extractTransactionNo(str)
+		#2 perform extraction of amount sent using common function
+		extractAmountSentRecieved(str)
+		#3 perform extraction of date and time recieved
+		extractDateTime(str)
+		#extract reciver's number
+		recieverNo = re.findall(r'(0\d{9})',str)
+		print(recieverNo)
+		#5) Extract current balance
+		extractBalance(str)
+	else:
+		print("Wrong function call!")
+	return
 #call sending function
 print("-----------------------------------------------------------------------")
 sendMPesa(example2)
 print("-----------------------------------------------------------------------")
+example3='''Z92FP098 confirmed. You bought Tsh3,500 of airtime on 22/2/14 at 8:12 PM
+New M-PESA balance is Tsh2,720'''
+example4='''Y24KU015 confirmed. You bought Tsh501 of airtime for 0765567959 on 1/1/14 at 10:09 PM
+New M-PESA balance is Tsh1,430'''
+print("----------------------------YOU BOUGHT AIRTIME-------------------------------------------")
+buyAirtime(example3)
+print("-----------------------------------------------------------------------")
+buyAirtime4someone(example4)
+print("-----------------------------------------------------------------------")
+
+#SIMPLE UNIT TESTS FOR THE COMMMON FUNCTIONS
+tranNo = extractTransactionNo(example3)
+print(tranNo)
+fullName = extractName(example2)
+print(fullName)
