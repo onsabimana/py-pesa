@@ -10,6 +10,10 @@ example3 ='''Z92FP098 confirmed. You bought Tsh3,500 of airtime on 22/2/14 at 8:
 New M-PESA balance is Tsh2,720'''
 example4='''Y24KU015 confirmed. You bought Tsh501 of airtime for 0765567959 on 1/1/14 at 10:09 PM
 New M-PESA balance is Tsh1,430'''
+example5 ='''Z15EE301 Confirmed.
+Tsh212,000 sent to business Bank for account
+ACB-11567341482 on 28/1/14 at 11:30 PM
+New M-PESA balance is Tsh225.'''
 
 regex =r"([A-Z0-9]+\s+Confirmed.)|(received\s+Tsh\d+,\d+)|(from\s+(.+?)\s+?on)|(\d{2}\/\d\/\d{2}\s+at\s+\d:\d{2}\s+(PM|AM))|(balance\s+is\s+Tsh\d+,\d+)"
 matches = re.finditer(regex, example)
@@ -42,14 +46,18 @@ def recievedMPesa(str):
 	timestamp =''
 	#5 - Balance
 	balance = ''
+	transactionType =''
+	
 	if checkTypeOfSMS('received',str) ==True:		#check if this is for M-PESA recieved transaction
 		regex =r"([A-Z0-9]+\s+Confirmed.)|(received\s+Tsh\d+,\d+|Tsh\d+)|(from\s+(.+?)\s+?on)|(\d{2}\/\d\/\d{2}\s+at\s+\d:\d{2}\s+(PM|AM))|(balance\s+is\s+Tsh\d+,\d+|Tsh\d+)"
-	elif checkTypeOfSMS('sent',str) ==True:
+	elif checkTypeOfSMS('sent',str) ==True & len(str) < 120:
 		regex = r"([A-Z0-9]+\s+Confirmed.)|(\s+Tsh\d+,\d+|Tsh\d+)|(sent\s+(.+?)\s+?on)|(\d{2}\/\d{2}\/\d{2}\s+at\s+\d{2}:\d{2}\s+(PM|AM))|(balance\s+is\s+Tsh\d+,\d+|Tsh\d+)"
 	elif checkTypeOfSMS('airtime on',str) ==True & checkTypeOfSMS('bought',str):
 		regex = r"([A-Z0-9]+\s+confirmed.|[A-Z0-9]+\s+Confirmed.)|(bought\s+Tsh\d+,\d+|Tsh\d+)|(from\s+(.+?)\s+?on)|(\d{2}\/\d\/\d{2}\s+at\s+\d:\d{2}\s+(PM|AM))|(balance\s+is\s+Tsh\d+,\d+|Tsh\d+)"
 	elif checkTypeOfSMS('airtime for',str) ==True & checkTypeOfSMS('bought',str):
 		regex=r"([A-Z0-9]+\s+confirmed.|[A-Z0-9]+\s+Confirmed.)|(bought\s+Tsh\d+,\d+|Tsh\d+)|(for\s+(.+?)\s+?on)|(\d{2}\/\d\/\d{2}|\d\/\d\/\d{2}\s+at\s+\d{2}:\d{2}\s+(PM|AM)|\s+\d:\d\s+(PM|AM))|(balance\s+is\s+Tsh\d+,\d+|Tsh\d+)"
+	elif checkTypeOfSMS('sent to business',str) ==True:
+		regex = r"([A-Z0-9]+\s+confirmed.|[A-Z0-9]+\s+Confirmed.)|(Tsh\d+,\d+|Tsh\d+)|(for account\s+(.+?)\s+?on)|(\d{2}\/\d\/\d{2}\s+at\s+\d{2}:\d{2}\s+(PM|AM)|\d\/\d\/\d{2}\s+at\s+\d{2}:\d{2}\s+(PM|AM)|\s+\d:\d\s+(PM|AM))|(balance\s+is\s+Tsh\d+,\d+|balance\s+is\s+Tsh\d+)"
 	else:
 		print("Wrong function for this transaction!")
 	#Extract required matches from the regular expression results
@@ -76,7 +84,7 @@ def recievedMPesa(str):
 		#Extract timestamp
 		balance = lisfOfActualMatchs[4].split()
 		balance = balance[2]
-	elif checkTypeOfSMS('sent',str) ==True:	
+	elif checkTypeOfSMS('sent',str) ==True & len(str) < 120:	
 		#Extract transaction number
 		transactionNo=lisfOfActualMatchs[0].split()
 		transactionNo = transactionNo[0]
@@ -91,7 +99,7 @@ def recievedMPesa(str):
 		#Extract timestamp
 		balance = lisfOfActualMatchs[4].split()
 		balance = balance[2]
-	if checkTypeOfSMS('airtime on',str) ==True & checkTypeOfSMS('bought',str) ==True:	
+	elif checkTypeOfSMS('airtime on',str) ==True & checkTypeOfSMS('bought',str) ==True:	
 		#Extract transaction number
 		transactionNo=lisfOfActualMatchs[0].split()
 		transactionNo = transactionNo[0]
@@ -104,7 +112,7 @@ def recievedMPesa(str):
 		#Extract timestamp
 		balance = lisfOfActualMatchs[3].split()
 		balance = balance[2]
-	if checkTypeOfSMS('airtime for',str) ==True & checkTypeOfSMS('bought',str) ==True:	
+	elif checkTypeOfSMS('airtime for',str) ==True & checkTypeOfSMS('bought',str) ==True:	
 		#Extract transaction number
 		transactionNo=lisfOfActualMatchs[0].split()
 		transactionNo = transactionNo[0]
@@ -120,6 +128,21 @@ def recievedMPesa(str):
 		#Extract timestamp
 		balance = lisfOfActualMatchs[4].split()
 		balance = balance[2]
+	elif checkTypeOfSMS('sent to business',str) ==True:
+		#Extract transaction number
+		transactionNo=lisfOfActualMatchs[0].split()
+		transactionNo = transactionNo[0]
+		#Extract Amount
+		amount = lisfOfActualMatchs[1]
+		#Extract reciever
+		reciever = lisfOfActualMatchs[2].split()
+		reciever = reciever[2]
+		#Extract timestamp
+		timestamp = lisfOfActualMatchs[3].split()
+		timestamp = timestamp[0] + ' '+timestamp[2]+' '+timestamp[3]
+		#Extract timestamp
+		balance = lisfOfActualMatchs[4].split()
+		balance = balance[2]
 	#All the transactions details to the final list
 	transactionDetails.append(transactionNo)    #add transaction number
 	transactionDetails.append(amount)    #add amount
@@ -129,4 +152,4 @@ def recievedMPesa(str):
 	transactionDetails.append(balance)    #add balance
 	return transactionDetails
 	
-print(recievedMPesa(example4))
+print(recievedMPesa(example5))
