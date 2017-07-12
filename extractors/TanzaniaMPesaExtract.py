@@ -33,7 +33,7 @@ def extractName(str):
 		#3 perform extraction of Sender's name 
 		nameString = re.search('from\s(.+?)\son', str)  #Extract the characters after "from" and space and before space and "on"
 	elif checkTypeOfSMS('sent',str) ==True:		#check if this is for M-PESA recieved transaction 
-		nameString = re.search('to\s(.+?)\son', str)  #Extract the characters after "to" and space and before space and "on"
+	nameString = re.search('to\s(.+?)\son', str)  #Extract the characters after "to" and space and before space and "on"
 	fullName = nameString.group(1)
 	firstName = fullName.partition(' ')[0];  	#Then extract only the first name from string which is the first
 	lastName = fullName.partition(' ')[2] 		#Then extract only the last name from string which is the first
