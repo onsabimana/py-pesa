@@ -159,13 +159,10 @@ def recievedMPesa(str):
 
     elif checkTypeOfSMS('Give', str):
         # Extract transaction number
-        transactionNo=lisfOfActualMatchs[0].split()
-        transactionNo = transactionNo[0]
+        transactionNo = lisfOfActualMatchs[0].split()[0]
 
-        # Extract Amount
-        amount = re.findall('Give\s+Tsh{1}[,0-9]{1,10}',str)
-        amount=amount[0].split()  # this produces "Give Tsh78,878"
-        amount=amount[1]          # this extract "Tsh78,878"
+        # Extract Amount: this produces "Give Tsh78,878"
+        amount = re.findall('Give\s+Tsh{1}[,0-9]{1,10}', str)[0].split()[1]
 
         # Extract reciever
         reciever = re.search('to\s(.+?)\sNew', str)  #Extract the characters after "to" and space and before space and "on"
@@ -178,16 +175,6 @@ def recievedMPesa(str):
         # Extract timestamp
         # balance = lisfOfActualMatchs[4]
 
-    #All the transactions details to the final list
-    transactionDetails.append(transactionNo)    # add transaction number
-
-    transactionDetails.append(amount)    # add amount
-
-    transactionDetails.append(sender)    # add sender
-    transactionDetails.append(reciever)    # add reciever
-    transactionDetails.append(timestamp)    # add timestamp
-    transactionDetails.append(balance)    # add balance
-
-    return transactionDetails
+    return [transactonNo, amount, sender, reciever, timestamp, balance]
 
 print(recievedMPesa(example6))
