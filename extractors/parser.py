@@ -26,7 +26,8 @@ on 8/3/14 at 5:19 PM
 Withdraw Tsh6,000 from
 128137 - EMANUEL SHANI
 New M-PESA balance is Tsh3,415'''
-
+example8='''BB43UB521 Confirmed. Your M-PESA balance was Tsh2,354
+on 8/3/14 at 5:26 PM.'''
 #-----------------------------------------------------START COMMON FUNCTIONS-----------------------------------------------------------------
 
 # function to check which type of sms
@@ -97,6 +98,10 @@ def computeTanzMPesa(str):
         regex = r"([A-Z0-9]+\s+Confirmed.)|(Tsh\d+,\d+)|(for account\s+(.+?)\s+?on)|(business Bank)|(\d{2}\/\d\/\d{2}\s+at\s+\d:\d{2}\s+(PM|AM))|(balance\s+is\s+(Tsh\d+,\d+|Tsh\d+))"
     elif checkTypeOfSMS('Give',str) == True:
         regex = r"([A-Z0-9]+\s+Confirmed.)|(Give\s+Tsh\d+,\d+)|(to\s+(.+?)\s+?New)|(balance\s+is\s+(Tsh\d+,\d+|Tsh\d+))"
+    elif checkTypeOfSMS('Withdraw',str) == True:
+        regex = r"([A-Z0-9]+\s+Confirmed.)|(Withdraw\s+Tsh\d+,\d+)|(from\s+(.+?)\s+?New)|(balance\s+is\s+(Tsh\d+,\d+|Tsh\d+))"
+    elif checkTypeOfSMS('Your M-PESA',str) == True:
+        regex = r"([A-Z0-9]+\s+Confirmed.)|(balance\s+was\s+(Tsh\d+,\d+|Tsh\d+))"
     else:
         print("Wrong function for this transaction!")
 
@@ -214,9 +219,37 @@ def computeTanzMPesa(str):
 
         # Extract balance
         balance = lisfOfActualMatchs[3].split()[2]
-	elif checkTypeOfSMS('Withdraw',str) == True:
-		# Extract transaction number
-        transactionNo=lisfOfActualMatchs[0].split()[0]
+	# elif checkTypeOfSMS('Withdraw',str) == True:
+	# 	# Extract transaction number
+     #    transactionNo=lisfOfActualMatchs[0].split()[0]
+    elif checkTypeOfSMS('Withdraw', str):
+        # Extract transaction number
+        transactionNo = lisfOfActualMatchs[0].split()[0]
+
+        # Extract Amount
+        amount = lisfOfActualMatchs[1].split()[1]
+
+        # Extract reciever
+        reciever = re.search('from\s(.+?)\sNew',
+                             str)  # Extract the characters after "to" and space and before space and "on"
+        reciever = reciever.group(1)
+
+        # Extract timestamp
+        timestamp = extractDate(str)
+
+        # Extract balance
+        balance = lisfOfActualMatchs[3].split()[2]
+    elif checkTypeOfSMS('Your M-PESA', str):
+        # Extract transaction number
+        transactionNo = lisfOfActualMatchs[0].split()[0]
+
+        # Extract timestamp
+        timestamp = extractDate(str)
+
+        # Extract balance
+        balance = lisfOfActualMatchs[1].split()[2]
+    else:
+        print("No match")
 	
     #All the transactions details to the final list
     transactionDetails.append(transactionNo)    # add transaction number
@@ -233,4 +266,4 @@ def computeTanzMPesa(str):
 
     return transactionDetails
 
-print(computeTanzMPesa(example7))
+print(computeTanzMPesa(example8))
