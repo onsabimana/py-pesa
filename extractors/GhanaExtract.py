@@ -1,45 +1,85 @@
 import re
-#this this file contains functions extract key important information from Ghana payment sms
-example = 'Trans. ID: 313821006060 You have sent 20GHS to 233261234567.  Your available balance is 250.67GHS.'
-
-#function to extract transaction number only
-def extractTransactionNo(str):
-    transactionNo = re.findall("[A-z]{5}\.\s[A-Z]{2}\:\s\d+",str)
-    transactionNo = re.findall("\d{12}",transactionNo[0])
-    transactionNo = transactionNo[0]
-    print (transactionNo)
-    return
 
 
-#function to extract amount sent
-def extractAmountSent(str):
-    allMoneyInString = re.findall("\d+\.\d+[A-Z]{3}|\d+[A-Z]{3}", example, re.I)
-    actualSentAmount = allMoneyInString[0]
-    print (actualSentAmount)
-    return
+class TransactionInfo(object):
+    """
+        key information to extract from a transaction message:
+
+        - transaction_id
+        - sent_mount
+        - sender_account
+        - received_amount
+        - receiver_account
+        - balance
+
+        :param transaction_message:
+        :type string:
+    """
+
+    def __init__(self, transaction_message):
+        super(TransactionInfo, self).__init__()
+        self.transaction_message = transaction_message
+
+    @property
+    def transaction_id(self):
+        raise NotImplementedError
+
+    @property
+    def sent_amount(self):
+        raise NotImplementedError
+
+    @property
+    def sender_account(self):
+        raise NotImplementedError
+
+    @property
+    def received_amount(self):
+        raise NotImplementedError
+
+    @property
+    def receiver_account(self):
+        raise NotImplementedError
+
+    @property
+    def balance(self):
+        raise NotImplementedError
 
 
-#function to extract account number
-def extractRecieverAccount(str):
-    stringExact = re.findall("[a-z]{2}\s\d{12}\.", str)
-    accountNo = transactionNo = re.findall("\d{12}",stringExact[0])
-    accountNo = accountNo[0]
-    print (accountNo)
-    return
+class SentMoneyNotification(TransactionInfo):
+    def __init__(self, transaction_message):
+        super(SentMoneyNotification, self).__init__(transaction_message)
 
+        self.info_patterns = {
+            "transaction_id":  re.compile(r"Trans.\s+ID:\s+(\w+)"),
+            "sent_amount": re.compile(r"sent\s+(\d+GHS)"),
+            "receiver_account": re.compile(r"to\s+(\w+)"),
+            "balance": re.compile(r"balance\s+is\s+(\d+.\d{2}GHS)")
+        }
 
-#Function to exact available balance#function to extract account number
-def extractAvailableBal(str):
-    allMoneys = re.findall("\d+\.\d+[A-Z]{3}|\d+[A-Z]{3}", str, re.I)
-    currentBal = allMoneys[1]
-    print (currentBal)
-    return
+    def extract_info_from_transaction(self, info_key):
+        info = self.info_patterns[info_key].findall(self.transaction_message)
+        return info[0] if info else ""
 
-#call my function
-extractTransactionNo(example)
+    @property
+    def transaction_id(self):
+        return self.extract_info_from_transaction("transaction_id")
 
-extractAmountSent(example)
+    @property
+    def sent_amount(self):
+        return self.extract_info_from_transaction("sent_amount")
 
-extractRecieverAccount(example)
+    @property
+    def sender_account(self):
+        return ""
 
-extractAvailableBal(example)
+    @property
+    def received_amount(self):
+        return ""
+
+    @property
+    def receiver_account(self):
+        return self.extract_info_from_transaction("receiver_account")
+
+    @property
+    def balance(self):
+        return self.extract_info_from_transaction("balance")
