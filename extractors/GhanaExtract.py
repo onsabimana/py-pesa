@@ -53,7 +53,7 @@ class SentMoneyNotification(TransactionInfo):
             "transaction_id":  re.compile(r"Trans.\s+ID:\s+(\w+)"),
             "sent_amount": re.compile(r"sent\s+(\d+GHS)"),
             "receiver_account": re.compile(r"to\s+(\w+)"),
-            "balance": re.compile(r"balance\s+is\s+(\d+.\d{2}GHS)")
+            "balance": re.compile(r"balance\s+is\s+(\d+.*\d*GHS)")
         }
 
     def extract_info_from_transaction(self, info_key):
