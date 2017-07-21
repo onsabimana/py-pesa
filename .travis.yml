@@ -4,4 +4,4 @@ python:
   - "3.6"
 
 script:
-  - python ./extractors/test
+  - python ./extractors/test.py
