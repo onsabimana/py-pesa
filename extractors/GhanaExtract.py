@@ -56,17 +56,17 @@ class SentMoneyNotification(TransactionInfo):
             "balance": re.compile(r"balance\s+is\s+(\d+.*\d*GHS)")
         }
 
-    def extract_info_from_transaction(self, info_key):
+    def extract_info_from_message(self, info_key):
         info = self.info_patterns[info_key].findall(self.transaction_message)
         return info[0] if info else ""
 
     @property
     def transaction_id(self):
-        return self.extract_info_from_transaction("transaction_id")
+        return self.extract_info_from_message("transaction_id")
 
     @property
     def sent_amount(self):
-        return self.extract_info_from_transaction("sent_amount")
+        return self.extract_info_from_message("sent_amount")
 
     @property
     def sender_account(self):
@@ -78,8 +78,8 @@ class SentMoneyNotification(TransactionInfo):
 
     @property
     def receiver_account(self):
-        return self.extract_info_from_transaction("receiver_account")
+        return self.extract_info_from_message("receiver_account")
 
     @property
     def balance(self):
-        return self.extract_info_from_transaction("balance")
+        return self.extract_info_from_message("balance")
