@@ -16,49 +16,30 @@ class TransactionInfo(object):
         :type string:
     """
 
-    def __init__(self, transaction_message):
+    def __init__(self, transaction_message, patterns):
         super(TransactionInfo, self).__init__()
         self.transaction_message = transaction_message
+        self.keys = (
+            "transaction_id",
+            "sent_amount",
+            "sender_account",
+            "received_amount",
+            "receiver_account",
+            "balance",
+        )
 
-    @property
-    def transaction_id(self):
-        raise NotImplementedError
+        for k in self.keys:
+            if k not in patterns:
+                raise ValueError("{0} must be keys to your pattern. Missing {1}".format(self.keys, k))
 
-    @property
-    def sent_amount(self):
-        raise NotImplementedError
-
-    @property
-    def sender_account(self):
-        raise NotImplementedError
-
-    @property
-    def received_amount(self):
-        raise NotImplementedError
-
-    @property
-    def receiver_account(self):
-        raise NotImplementedError
-
-    @property
-    def balance(self):
-        raise NotImplementedError
-
-
-class SentMoneyNotification(TransactionInfo):
-    def __init__(self, transaction_message):
-        super(SentMoneyNotification, self).__init__(transaction_message)
-
-        self.info_patterns = {
-            "transaction_id":  re.compile(r"Trans.\s+ID:\s+(\w+)"),
-            "sent_amount": re.compile(r"sent\s+(\d+GHS)"),
-            "receiver_account": re.compile(r"to\s+(\w+)"),
-            "balance": re.compile(r"balance\s+is\s+(\d+.*\d*GHS)")
-        }
+        self.info_patterns = patterns
 
     def extract_info_from_message(self, info_key):
-        info = self.info_patterns[info_key].findall(self.transaction_message)
-        return info[0] if info else ""
+        if self.info_patterns[info_key] is not None:
+            info = self.info_patterns[info_key].findall(self.transaction_message)
+            return info[0] if info else ""
+        else:
+            return ""
 
     @property
     def transaction_id(self):
@@ -70,11 +51,11 @@ class SentMoneyNotification(TransactionInfo):
 
     @property
     def sender_account(self):
-        return ""
+        return self.extract_info_from_message("sender_account")
 
     @property
     def received_amount(self):
-        return ""
+        return self.extract_info_from_message("received_amount")
 
     @property
     def receiver_account(self):
@@ -83,3 +64,4 @@ class SentMoneyNotification(TransactionInfo):
     @property
     def balance(self):
         return self.extract_info_from_message("balance")
+
