@@ -64,4 +64,3 @@ class TransactionInfo(object):
     @property
     def balance(self):
         return self.extract_info_from_message("balance")
-

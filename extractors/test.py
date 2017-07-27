@@ -5,25 +5,16 @@ import re
 
 import unittest
 
-from GhanaExtract import TransactionInfo
+from base_transaction_info import TransactionInfo
 
+import ghana
 
 class TestGhanaTransactionMessages(unittest.TestCase):
 
     def testSentMoneyNotification(self):
         test_message = 'Trans. ID: 313821006060 You have sent 20GHS to 233261234567.  Your available balance is 250.67GHS.'
 
-
-        ghana_sent_money_notification_patterns = {
-            "transaction_id":  re.compile(r"Trans.\s+ID:\s+(\w+)"),
-            "sent_amount": re.compile(r"sent\s+(\d+GHS)"),
-            "receiver_account": re.compile(r"to\s+(\w+)"),
-            "balance": re.compile(r"balance\s+is\s+(\d+.*\d*GHS)"),
-            "sender_account": None,
-            "received_amount": None
-        }
-
-        info = TransactionInfo(test_message, ghana_sent_money_notification_patterns)
+        info = TransactionInfo(test_message, ghana.sent_money_notification_patterns)
 
         self.assertEqual(info.transaction_id, "313821006060")
         self.assertEqual(info.sent_amount, "20GHS")
