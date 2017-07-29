@@ -48,6 +48,14 @@ class TestGhanaTransactionMessages(unittest.TestCase):
         self.assertEqual(info.receiver_account, "MUSHI WILLIAM")
         self.assertEqual(info.balance, "Tsh23,232")
 
+    def testTzMpesaBuyAirtimeMoneyNotification(self):
+        test_message = 'Z92FP098 confirmed. You bought Tsh3,500 of airtime on 22/2/14 at 8:12 PM New M-PESA balance is Tsh2,720'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_mpesa_buyAirtime_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "Z92FP098")
+        self.assertEqual(info.received_amount, "Tsh3,500")
+        self.assertEqual(info.balance, "Tsh2,720")
 
 if __name__ == '__main__':
     unittest.main()
