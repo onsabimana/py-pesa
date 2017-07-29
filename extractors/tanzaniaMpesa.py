@@ -54,3 +54,21 @@ tz_mpesa_deposit_money_notification_patterns = {
     "sender_account": None,
     "received_amount": None
 }
+#Notifications when you withdraw money from your account at an agent
+tz_mpesa_withdraw_money_notification_patterns = {
+    "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed."),
+    "sent_amount": None,
+    "receiver_account": None,
+    "balance": re.compile(r"balance\s+is\s+(Tsh\d+,\d+|Tsh\d+)"),
+    "sender_account": re.compile(r"from\s+(.+?)\s+?New"),
+    "received_amount": re.compile(r"Withdraw\s+(Tsh\d+,\d+|Tsh\d+)")
+}
+#Notifications when do a balance check
+tz_mpesa_checkbalance_money_notification_patterns = {
+    "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed."),
+    "sent_amount": None,
+    "receiver_account": None,
+    "balance": re.compile(r"balance\s+was\s+(Tsh\d+,\d+|Tsh\d+)"),
+    "sender_account": None,
+    "received_amount": None
+}

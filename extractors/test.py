@@ -87,5 +87,23 @@ class TestGhanaTransactionMessages(unittest.TestCase):
         self.assertEqual(info.receiver_account, "Hilda Joseph Mushi")
         self.assertEqual(info.balance, "Tsh10,015")
 
+    def testTzMpesaWithdrawMoneyNotification(self):
+        test_message = 'BA35RT157 Confirmed. on 8/3/14 at 5:19 PM Withdraw Tsh6,000 from 128137 - EMANUEL SHANI New M-PESA balance is Tsh3,415'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_mpesa_withdraw_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "BA35RT157")
+        self.assertEqual(info.received_amount, "Tsh6,000")
+        self.assertEqual(info.sender_account, "128137 - EMANUEL SHANI")
+        self.assertEqual(info.balance, "Tsh3,415")
+
+    def testTzMpesaCheckBalanceMoneyNotification(self):
+        test_message = 'BB43UB521 Confirmed. Your M-PESA balance was Tsh2,354 on 8/3/14 at 5:26 PM.'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_mpesa_checkbalance_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "BB43UB521")
+        self.assertEqual(info.balance, "Tsh2,354")
+
 if __name__ == '__main__':
     unittest.main()
