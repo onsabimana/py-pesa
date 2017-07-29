@@ -51,11 +51,41 @@ class TestGhanaTransactionMessages(unittest.TestCase):
     def testTzMpesaBuyAirtimeMoneyNotification(self):
         test_message = 'Z92FP098 confirmed. You bought Tsh3,500 of airtime on 22/2/14 at 8:12 PM New M-PESA balance is Tsh2,720'
 
-        info = TransactionInfo(test_message, tanzaniaMpesa.tz_mpesa_buyAirtime_money_notification_patterns)
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_mpesa_buyairtime_money_notification_patterns)
 
         self.assertEqual(info.transaction_id, "Z92FP098")
         self.assertEqual(info.received_amount, "Tsh3,500")
         self.assertEqual(info.balance, "Tsh2,720")
+
+    def testTzMpesaSendAirtimeMoneyNotification(self):
+        test_message = 'Y24KU015 confirmed. You bought Tsh501 of airtime for 0765567959 on 1/1/14 at 10:09 PM New M-PESA balance is Tsh1,430'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_mpesa_sendairtime_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "Y24KU015")
+        self.assertEqual(info.sent_amount, "Tsh501")
+        self.assertEqual(info.receiver_account, "0765567959")
+        self.assertEqual(info.balance, "Tsh1,430")
+
+    def testTzMpesaBankdepositMoneyNotification(self):
+        test_message = 'Z15EE301 Confirmed. Tsh212,000 sent to business Bank for account ACB-11567341482 on 28/1/14 at 11:30 PM New M-PESA balance is Tsh225.'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_mpesa_bankdeposit_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "Z15EE301")
+        self.assertEqual(info.sent_amount, "Tsh212,000")
+        self.assertEqual(info.receiver_account, "ACB-11567341482")
+        self.assertEqual(info.balance, "Tsh225")
+
+    def testTzMpesadepositMoneyNotification(self):
+        test_message = 'BA35RS735 Confirmed. on 8/3/14 at 4:59 PM Give Tsh10,000 cash to Hilda Joseph Mushi. New M-PESA balance is Tsh10,015'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_mpesa_deposit_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "BA35RS735")
+        self.assertEqual(info.sent_amount, "Tsh10,000")
+        self.assertEqual(info.receiver_account, "Hilda Joseph Mushi")
+        self.assertEqual(info.balance, "Tsh10,015")
 
 if __name__ == '__main__':
     unittest.main()
