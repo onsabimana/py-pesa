@@ -1,6 +1,7 @@
 import re
 
-#Notification when a Person is sending you money.
+
+# Notification when a Person is sending you money.
 tz_mpesa_recieved_money_notification_patterns = {
     "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed."),
     "sent_amount": None,
@@ -9,7 +10,9 @@ tz_mpesa_recieved_money_notification_patterns = {
     "sender_account": re.compile(r"from\s+(.+?)\s+?on"),
     "received_amount": re.compile(r"received\s+(Tsh\d+,\d+|Tsh\d+)")
 }
-#Notifications when you send another person money
+
+
+# Notifications when you send another person money
 tz_mpesa_sent_money_notification_patterns = {
     "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed."),
     "sent_amount": re.compile(r"(Tsh\d+,\d+|Tsh\d+)\s+sent"),
@@ -18,7 +21,9 @@ tz_mpesa_sent_money_notification_patterns = {
     "sender_account": None,
     "received_amount": None
 }
-#Notifications when you buy Airtime for yourself
+
+
+# Notifications when you buy Airtime for yourself
 tz_mpesa_buyairtime_money_notification_patterns = {
     "transaction_id":  re.compile(r"([A-Z0-9]+)\s+confirmed."),
     "sent_amount": None,
@@ -27,7 +32,9 @@ tz_mpesa_buyairtime_money_notification_patterns = {
     "sender_account": None,
     "received_amount": re.compile(r"bought\s+(Tsh\d+,\d+|Tsh\d+)")
 }
-#Notifications when you buy Airtime for someone else
+
+
+# Notifications when you buy Airtime for someone else
 tz_mpesa_sendairtime_money_notification_patterns = {
     "transaction_id":  re.compile(r"([A-Z0-9]+)\s+confirmed."),
     "sent_amount": re.compile(r"bought\s+(Tsh\d+,\d+|Tsh\d+)"),
@@ -36,7 +43,9 @@ tz_mpesa_sendairtime_money_notification_patterns = {
     "sender_account": None,
     "received_amount": None
 }
-#Notifications when you deposit money into bank 
+
+
+# Notifications when you deposit money into bank
 tz_mpesa_bankdeposit_money_notification_patterns = {
     "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed."),
     "sent_amount": re.compile(r"(Tsh\d+,\d+|Tsh\d+)\s+sent"),
@@ -45,7 +54,9 @@ tz_mpesa_bankdeposit_money_notification_patterns = {
     "sender_account": None,
     "received_amount": None
 }
-#Notifications when you deposit money into your mpesa account
+
+
+# Notifications when you deposit money into your mpesa account
 tz_mpesa_deposit_money_notification_patterns = {
     "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed."),
     "sent_amount": re.compile(r"Give\s+(Tsh\d+,\d+|Tsh\d+)"),
@@ -54,7 +65,9 @@ tz_mpesa_deposit_money_notification_patterns = {
     "sender_account": None,
     "received_amount": None
 }
-#Notifications when you withdraw money from your account at an agent
+
+
+# Notifications when you withdraw money from your account at an agent
 tz_mpesa_withdraw_money_notification_patterns = {
     "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed."),
     "sent_amount": None,
@@ -63,7 +76,9 @@ tz_mpesa_withdraw_money_notification_patterns = {
     "sender_account": re.compile(r"from\s+(.+?)\s+?New"),
     "received_amount": re.compile(r"Withdraw\s+(Tsh\d+,\d+|Tsh\d+)")
 }
-#Notifications when do a balance check
+
+
+# Notifications when do a balance check
 tz_mpesa_checkbalance_money_notification_patterns = {
     "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed."),
     "sent_amount": None,

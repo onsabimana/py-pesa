@@ -10,10 +10,9 @@ from base_transaction_info import TransactionInfo
 import ghana
 import tanzaniaMpesa
 
+
 class TestGhanaTransactionMessages(unittest.TestCase):
 
-#GHANA MONEY TESTS
-#----------------------------------------------------------------------------------------------------------------------------
     def testSentMoneyNotification(self):
         test_message = 'Trans. ID: 313821006060 You have sent 20GHS to 233261234567.  Your available balance is 250.67GHS.'
 
@@ -26,8 +25,10 @@ class TestGhanaTransactionMessages(unittest.TestCase):
 
     def testReceivedMoneyNotifcation(self):
         pass
-#TANZANIA MPESA TESTS
-#------------------------------------------------------------------------------------------------------------------------------
+
+
+class TestTanzaniaTransactionMessages(unittest.TestCase):
+
     def testTzMpesaRecievedMoneyNotification(self):
         test_message = 'Z10DN636 Confirmed. You have received Tsh50,000 from FREDRICK KIMARO on 27/1/14 at 1:19 PM New M-PESA balance is Tsh214,676'
 
@@ -104,6 +105,7 @@ class TestGhanaTransactionMessages(unittest.TestCase):
 
         self.assertEqual(info.transaction_id, "BB43UB521")
         self.assertEqual(info.balance, "Tsh2,354")
+
 
 if __name__ == '__main__':
     unittest.main()
