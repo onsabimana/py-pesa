@@ -1,5 +1,6 @@
 import re
 
+#----------------START OF TANZANIA MPESA TRANSACTION PATTERNS -------------------
 
 # Notification when a Person is sending you money.
 tz_mpesa_recieved_money_notification_patterns = {
@@ -86,4 +87,17 @@ tz_mpesa_checkbalance_money_notification_patterns = {
     "balance": re.compile(r"balance\s+was\s+(Tsh\d+,\d+|Tsh\d+)"),
     "sender_account": None,
     "received_amount": None
+}
+#------------------END OF TANZANIA MPESA TRANSACTION PATTERNS ------------------
+
+#----------------START OF TANZANIA TIGO TRANSACTION PATTERNS -------------------
+
+# Notification when a Person is sending you money.
+tz_tigo_recieved_money_notification_patterns = {
+    "transaction_id":  re.compile(r"TxnId:\s+([A-Z0-9]+.[A-Z0-9]+.[A-Z0-9]+)"),
+    "sent_amount": None,
+    "receiver_account": None,
+    "balance": re.compile(r"balance\s+is\s+(Tsh\s+\d+,\d+|Tsh\s+\d+)"),
+    "sender_account": re.compile(r"from\s+(.+?)\."),
+    "received_amount": re.compile(r"received\s+(Tsh\s+\d+,\d+|Tsh\s+\d+)")
 }

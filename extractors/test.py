@@ -29,6 +29,7 @@ class TestGhanaTransactionMessages(unittest.TestCase):
 
 class TestTanzaniaTransactionMessages(unittest.TestCase):
 
+    #-------------------- START OF MPESA TRANSACTIONS TESTS --------------------
     def testTzMpesaRecievedMoneyNotification(self):
         test_message = 'Z10DN636 Confirmed. You have received Tsh50,000 from FREDRICK KIMARO on 27/1/14 at 1:19 PM New M-PESA balance is Tsh214,676'
 
@@ -105,7 +106,17 @@ class TestTanzaniaTransactionMessages(unittest.TestCase):
 
         self.assertEqual(info.transaction_id, "BB43UB521")
         self.assertEqual(info.balance, "Tsh2,354")
+    #-------------------- END OF MPESA TRANSACTIONS TESTS ----------------------
 
+    #-------------------- START OF TIGO TRANSACTIONS TESTS ---------------------
+    def testTztTigoRecievedMoneyNotification(self):
+        test_message = 'New balance is Tsh 138,522. You have received Tsh 50,000 from CHARLES KOMBA, 0727666074. 31/01/2014 05:36 PM; with TxnId: PP141141.1843.D06413. Transact with...'
 
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_tigo_recieved_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "PP141141.1843.D06413")
+        self.assertEqual(info.received_amount, "Tsh 50,000")
+        self.assertEqual(info.sender_account, "CHARLES KOMBA, 0727666074")
+        self.assertEqual(info.balance, "Tsh 138,522")
 if __name__ == '__main__':
     unittest.main()
