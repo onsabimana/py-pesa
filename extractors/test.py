@@ -106,7 +106,9 @@ class TestTanzaniaTransactionMessages(unittest.TestCase):
 
         self.assertEqual(info.transaction_id, "BB43UB521")
         self.assertEqual(info.balance, "Tsh2,354")
+
     #-------------------- END OF MPESA TRANSACTIONS TESTS ----------------------
+
 
     #-------------------- START OF TIGO TRANSACTIONS TESTS ---------------------
     def testTztTigoRecievedMoneyNotification(self):
@@ -118,5 +120,46 @@ class TestTanzaniaTransactionMessages(unittest.TestCase):
         self.assertEqual(info.received_amount, "Tsh 50,000")
         self.assertEqual(info.sender_account, "CHARLES KOMBA, 0727666074")
         self.assertEqual(info.balance, "Tsh 138,522")
+
+    def testTzTigoSentMoneyNotification(self):
+        test_message = 'New balance is Tsh 2,515. Money sent successfully to ANJELA KIRIA, 0745239044. Amount: Tsh 31,000. Fee: Tsh 350.TxnID: PP134304.0912.J02744. You can now send...'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_tigo_sent_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "PP134304.0912.J02744")
+        self.assertEqual(info.sent_amount, "Tsh 31,000")
+        self.assertEqual(info.receiver_account, "ANJELA KIRIA, 0745239044")
+        self.assertEqual(info.balance, "Tsh 2,515")
+
+    def testTzTigoBuyAirtimeMoneyNotification(self):
+        test_message = 'New balance is Tsh 2,266. Your recharge request is successful for amount Tsh 3,501. TxnId : RC140320.1332.D09804. Transact with Tigo Pesa and win from Tshs...'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_tigo_buyairtime_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "RC140320.1332.D09804")
+        self.assertEqual(info.received_amount, "Tsh 3,501")
+        self.assertEqual(info.balance, "Tsh 2,266")
+
+    def testTzTigoPayBillMoneyNotification(self):
+        test_message = 'Bill Transaction has been sent to Tanesco.Please wait for confirmation TxnId: BP150143.1343.E03178, Bill Number:01343392423, transaction amount : 20,000 Tsh,new balance :71,073 Tsh, Company Tanesco.'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_mpesa_tigo_paybill_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "BP150143.1343.E03178")
+        self.assertEqual(info.sent_amount, "20,000 Tsh")
+        self.assertEqual(info.receiver_account, "Tanesco")                  # this is not really an account per se, maybe Bill number is the receiver_account
+        self.assertEqual(info.sender_account, "01343392423")
+        self.assertEqual(info.balance, "71,073 Tsh")
+
+    def testTzTigoBankdepositMoneyNotification(self):
+        test_message = 'Bank payment successfull. The details are : TxnId: BP150121.1337.C09085, Ref Number:10411342553, transaction amount : 111,000 Tsh , charges: 0 Tsh,new balance :2,323 Tsh, Bank Name : ACB'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_tigo_bankdeposit_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "BP150121.1337.C09085")
+        self.assertEqual(info.sent_amount, "111,000 Tsh")
+        self.assertEqual(info.receiver_account, "ACB")
+        self.assertEqual(info.balance, "2,323 Tsh")
+        
 if __name__ == '__main__':
     unittest.main()

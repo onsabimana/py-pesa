@@ -101,3 +101,43 @@ tz_tigo_recieved_money_notification_patterns = {
     "sender_account": re.compile(r"from\s+(.+?)\."),
     "received_amount": re.compile(r"received\s+(Tsh\s+\d+,\d+|Tsh\s+\d+)")
 }
+
+# Notifications when you send another person money
+tz_tigo_sent_money_notification_patterns = {
+    "transaction_id":  re.compile(r"TxnID:\s+([A-Z0-9]+.[A-Z0-9]+.[A-Z0-9]+)"),
+    "sent_amount": re.compile(r"Amount:\s+(Tsh\s+\d+,\d+|Tsh\s+\d+)"),
+    "receiver_account": re.compile(r"to\s+(.+?)\."),
+    "balance": re.compile(r"balance\s+is\s+(Tsh\s+\d+,\d+|Tsh\s+\d+)"),
+    "sender_account": None,
+    "received_amount": None
+}
+
+# Notifications when you buy Airtime for yourself
+tz_tigo_buyairtime_money_notification_patterns = {
+    "transaction_id":  re.compile(r"TxnId\s+:\s+([A-Z0-9]+.[A-Z0-9]+.[A-Z0-9]+)"),
+    "sent_amount": None,
+    "receiver_account":None,
+    "balance": re.compile(r"balance\s+is\s+(Tsh\s+\d+,\d+|Tsh\s+\d+)"),
+    "sender_account": None,
+    "received_amount": re.compile(r"for amount\s+(Tsh\s+\d+,\d+|Tsh\s+\d+)")
+}
+
+#Notifications when you pay a bill (paybill?)            - Not sure about this one
+tz_mpesa_tigo_paybill_money_notification_patterns = {
+    "transaction_id":  re.compile(r"TxnId:\s+([A-Z0-9]+.[A-Z0-9]+.[A-Z0-9]+)"),
+    "sent_amount": re.compile(r"amount\s+:\s+(\d+,\d+\s+Tsh|\d+\s+Tsh)"),
+    "receiver_account": re.compile(r"sent\s+to\s+(.+?)\."),
+    "balance": re.compile(r"balance\s+:(\d+,\d+\s+Tsh|\d+\s+Tsh)"),
+    "sender_account":re.compile(r"Bill\s+Number:(\d+),"),
+    "received_amount": None
+}
+
+#Notifications when you deposit money into bank
+tz_tigo_bankdeposit_money_notification_patterns = {
+    "transaction_id":  re.compile(r"TxnId:\s+([A-Z0-9]+.[A-Z0-9]+.[A-Z0-9]+)"),
+    "sent_amount": re.compile(r"amount\s+:\s+(\d+,\d+\s+Tsh|\d+\s+Tsh)"),
+    "receiver_account": re.compile(r"Bank\s+Name\s+:\s+([A-Z0-9]+)"),       #Note sure what would be, a reference number or bank name, in MPESA this is bank account number
+    "balance": re.compile(r"balance\s+:(\d+,\d+\s+Tsh|\d+\s+Tsh)"),
+    "sender_account": None,
+    "received_amount": None
+}
