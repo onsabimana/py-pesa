@@ -141,3 +141,23 @@ tz_tigo_bankdeposit_money_notification_patterns = {
     "sender_account": None,
     "received_amount": None
 }
+
+#Notifications when you deposit money into your Tigo account
+tz_tigo_deposit_money_notification_patterns = {
+    "transaction_id":  re.compile(r"TxnID:\s+([A-Z0-9]+.[A-Z0-9]+.[A-Z0-9]+)"),
+    "sent_amount": re.compile(r"Cash-In\s+of\s+(Tsh\s+\d+,\d+|Tsh\s+\d+)"),
+    "receiver_account": re.compile(r"Agent\s+(.+?)\."),
+    "balance": re.compile(r"balance\s+is\s+(Tsh\s+\d+,\d+|Tsh\s+\d+)"),
+    "sender_account": None,
+    "received_amount": None
+}
+
+#Notifications when you deposit money into your Tigo account
+tz_tigo_withdraw_money_notification_patterns = {
+    "transaction_id":  re.compile(r"TxnID\s+([A-Z0-9]+.[A-Z0-9]+.[A-Z0-9]+)"),
+    "sent_amount": None,
+    "receiver_account": re.compile(r"Cash-Out\s+to\s+(.+?)\s+?was"),
+    "balance": re.compile(r"balance\s+is\s+(Tsh\s+\d+,\d+|Tsh\s+\d+)"),
+    "sender_account": None,
+    "received_amount": re.compile(r"Amount\s+(Tsh\s+\d+,\d+|Tsh\s+\d+)")
+}

@@ -160,6 +160,26 @@ class TestTanzaniaTransactionMessages(unittest.TestCase):
         self.assertEqual(info.sent_amount, "111,000 Tsh")
         self.assertEqual(info.receiver_account, "ACB")
         self.assertEqual(info.balance, "2,323 Tsh")
-        
+
+    def testTzTigoDepositMoneyNotification(self):
+        test_message = 'New balance is Tsh 35,165. Cash-In of Tsh 35,000 successful. Agent HILDA MUSHI. TxnID: CI154303.0933.G03265. You can now send money from your CRDB account to...'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_tigo_deposit_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "CI154303.0933.G03265")
+        self.assertEqual(info.sent_amount, "Tsh 35,000")
+        self.assertEqual(info.receiver_account, "HILDA MUSHI")
+        self.assertEqual(info.balance, "Tsh 35,165")
+
+    def testTzTigoWithdrawMoneyNotification(self):
+        test_message = 'New balance is Tsh 6,022. Cash-Out to EMANUEL KIULA was successful. Amount Tsh 130,000. Charges Tsh 2500.TxnID CO150121.3223.G00889. Transact with Tigo Pesa...'
+
+        info = TransactionInfo(test_message, tanzaniaMpesa.tz_tigo_withdraw_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "CO150121.3223.G00889")
+        self.assertEqual(info.received_amount, "Tsh 130,000")
+        self.assertEqual(info.receiver_account, "EMANUEL KIULA")
+        self.assertEqual(info.balance, "Tsh 6,022")
+
 if __name__ == '__main__':
     unittest.main()
