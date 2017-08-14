@@ -247,5 +247,46 @@ class TestKenyaTransactionMessages(unittest.TestCase):
 
         self.assertEqual(info.sent_amount, "50.00Ksh")
 
+    #-------------------- START OF MPESA PRIVATE TRANSACTIONS TESTS ---------------------
+    def testKeMpesaTransferMoneyNotification(self):
+        test_message = 'DT85TH896 Confirmed. You have received Ksh3,500.00 from 501901 - KCB Money Transfer Services on 31/7/13 at 6:43 PM New M-PESA balance is Ksh11,312.00.Save & get a loan on Mshwari'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_transfer_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "DT85TH896")
+        self.assertEqual(info.received_amount, "Ksh3,500.00")
+        self.assertEqual(info.sender_account, "501901 - KCB Money Transfer Services")
+        self.assertEqual(info.balance, "Ksh11,312.00")
+
+    def testKeMpesaReceivedMoneyNotification(self):
+        test_message = 'BS49OR201 Confirmed. You have received Ksh50.00 from MICHAEL FEDERSEN 254729901555 on 15/10/11 at 11:52 AM New M-PESA balance is Ksh100.00'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_received_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "BS49OR201")
+        self.assertEqual(info.received_amount, "Ksh50.00")
+        self.assertEqual(info.sender_account, "MICHAEL FEDERSEN 254729901555")
+        self.assertEqual(info.balance, "Ksh100.00")
+
+    def testKeMpesaCashDepositMoneyNotification(self):
+        test_message = 'DQ94ZE762 Confirmed. on 3/7/13 at 9:07 AM Give Ksh1,000.00 cash to Digital Africa Services Jolet Supermarket New M-PESA balance is Ksh1,338.00'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_cashdeposit_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "DQ94ZE762")
+        self.assertEqual(info.sent_amount, "Ksh1,000.00")
+        self.assertEqual(info.receiver_account, "Digital Africa Services Jolet Supermarket")
+        self.assertEqual(info.balance, "Ksh1,338.00")
+
+    def testKeMpesaWidrawMoneyNotification(self):
+        test_message = 'ET04TG335 Confirmed. on 20/2/14 at 2:44 PM Withdraw Ksh16,000.00 from 129324 - Brothers Link Agency Vetngong Road New M-PESA balance is Ksh570.00.Save & get a loan on MShwari'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_withdraw_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "ET04TG335")
+        self.assertEqual(info.sent_amount, "Ksh16,000.00")
+        self.assertEqual(info.receiver_account, "129324 - Brothers Link Agency Vetngong Road")
+        self.assertEqual(info.balance, "Ksh570.00")
+
 if __name__ == '__main__':
     unittest.main()

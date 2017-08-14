@@ -72,3 +72,49 @@ ke_airtel_error_money_notification_patterns = {
     "received_amount": None
 }
 #----------------END OF KENYA AIRTEL TRANSACTION PATTERNS -------------------
+
+#----------------START OF KENYA MPESA TRANSACTION PATTERNS -------------------
+
+#Notification for when you transfer money to MPESA from your bank account
+#(suspected to be a general B2C status message-REVIEW).
+ke_mpesa_transfer_money_notification_patterns = {
+    "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed"),
+    "sent_amount": None,
+    "receiver_account": None,
+    "balance": re.compile(r"balance\s+is\s+(Ksh\d+,\d+.\d+|Ksh\d+.\d+|Ksh\d+,\d+|Ksh\d+)"),
+    "sender_account": re.compile(r"from\s+(.+?)\s+?on"),
+    "received_amount": re.compile(r"received\s+(Ksh\d+,\d+.\d+|Ksh\d+.\d+|Ksh\d+,\d+|Ksh\d+)")
+}
+
+#Notification when a Person is sending you money- REVIEW
+ke_mpesa_received_money_notification_patterns = {
+    "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed"),
+    "sent_amount": None,
+    "receiver_account": None,
+    "balance": re.compile(r"balance\s+is\s+(Ksh\d+,\d+.\d+|Ksh\d+.\d+|Ksh\d+,\d+|Ksh\d+)"),
+    "sender_account": re.compile(r"from\s+(.+?)\s+?on"),
+    "received_amount": re.compile(r"received\s+(Ksh\d+,\d+.\d+|Ksh\d+.\d+|Ksh\d+,\d+|Ksh\d+)")
+}
+
+#Notifications when an error occours.
+#Not sure how to capture these - REVIEW
+
+#Notifications when depositing cash money into your mpesa account
+ke_mpesa_cashdeposit_money_notification_patterns = {
+    "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed"),
+    "sent_amount": re.compile(r"Give\s+(Ksh\d+,\d+.\d+|Ksh\d+.\d+|Ksh\d+,\d+|Ksh\d+)"),
+    "receiver_account": re.compile(r"cash\s+to\s+(.+?)\s+?New"),
+    "balance": re.compile(r"balance\s+is\s+(Ksh\d+,\d+.\d+|Ksh\d+.\d+|Ksh\d+,\d+|Ksh\d+)"),
+    "sender_account": None,
+    "received_amount": None
+}
+
+#Notifications when withdrawing money from you account at an agent
+ke_mpesa_withdraw_money_notification_patterns = {
+    "transaction_id":  re.compile(r"([A-Z0-9]+)\s+Confirmed"),
+    "sent_amount": re.compile(r"Withdraw\s+(Ksh\d+,\d+.\d+|Ksh\d+.\d+|Ksh\d+,\d+|Ksh\d+)"),
+    "receiver_account": re.compile(r"from\s+(.+?)\s+?New"),
+    "balance": re.compile(r"balance\s+is\s+(Ksh\d+,\d+.\d+|Ksh\d+.\d+|Ksh\d+,\d+|Ksh\d+)"),
+    "sender_account": None,
+    "received_amount": None
+}
