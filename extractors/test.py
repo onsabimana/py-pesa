@@ -27,7 +27,6 @@ class TestGhanaTransactionMessages(unittest.TestCase):
     def testReceivedMoneyNotifcation(self):
         pass
 
-
 class TestTanzaniaTransactionMessages(unittest.TestCase):
 
     #-------------------- START OF MPESA TRANSACTIONS TESTS --------------------
@@ -183,6 +182,7 @@ class TestTanzaniaTransactionMessages(unittest.TestCase):
         self.assertEqual(info.balance, "Tsh 6,022")
 
     #-------------------- END OF TIGO TRANSACTIONS TESTS ----------------------
+
 class TestKenyaTransactionMessages(unittest.TestCase):
     #-------------------- START OF KENYA AIRTEL PRIVATE TRANSACTIONS TESTS-------
     def testKeAirtelBuyMoneyNotification(self):
@@ -287,6 +287,93 @@ class TestKenyaTransactionMessages(unittest.TestCase):
         self.assertEqual(info.sent_amount, "Ksh16,000.00")
         self.assertEqual(info.receiver_account, "129324 - Brothers Link Agency Vetngong Road")
         self.assertEqual(info.balance, "Ksh570.00")
+
+    def testKeMpesaSendMoneyNotification(self):
+        test_message = 'DZ12GX874 Confirmed. Ksh2,100.00 sent to BRIAN MBUGUA 0723447655 on 17/9/13 at 3:16 PM New M-PESA balance is Ksh106.00.PIN YAKO SIRI YAKO'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_send_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "DZ12GX874")
+        self.assertEqual(info.sent_amount, "Ksh2,100.00")
+        self.assertEqual(info.receiver_account, "BRIAN MBUGUA 0723447655")
+        self.assertEqual(info.balance, "Ksh106.00")
+
+    def testKeMpesaBuyAirtimeMoneyNotification(self):
+        test_message = 'DZ55IX312 confirmed. You bought Ksh100.00 of airtime on 21/9/13 at 5:51 PM New M-PESA balance is Ksh6.00.Safaricom only calls you from 0722000000'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_buyairtime_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "DZ55IX312")
+        self.assertEqual(info.received_amount, "Ksh100.00")
+        self.assertEqual(info.sender_account, "0722000000")
+        self.assertEqual(info.balance, "Ksh6.00")
+
+    def testKeMpesaBalanceCheckMoneyNotification(self):
+        test_message = 'DQ91IB986 Confirmed. Your M-PESA balance was Ksh339.00 on 2/7/13 at 6:46 PM.Safaricom only calls you from 0722000000'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_balancecheck_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "DQ91IB986")
+        self.assertEqual(info.sender_account, "0722000000")
+        self.assertEqual(info.balance, "Ksh339.00")
+
+    def testKeMpesaPayBillMoneyNotification(self):
+        test_message = 'DY28XV679 Confirmed. Ksh4,000.00 sent to KCB Paybill AC for account 1137238445 on 9/9/13 at 11:31 PM New M-PESA balance is Ksh22.00.'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_paybill_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "DY28XV679")
+        self.assertEqual(info.sent_amount, "Ksh4,000.00")
+        self.assertEqual(info.receiver_account, "1137238445")
+        self.assertEqual(info.balance, "Ksh22.00")
+
+    def testKeMpesaBuygoodsReceiveMoneyNotification(self):
+        test_message = 'EA54HY643 Confirmed. on 28/9/13 at 1:14 PM Ksh50.00 received from 254729639024 MORRIS M. New Account balance is Ksh54.00'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_buygoodsreceieve_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "EA54HY643")
+        self.assertEqual(info.received_amount, "Ksh50.00")
+        self.assertEqual(info.sender_account, "254729639024 MORRIS M")
+        self.assertEqual(info.balance, "Ksh54.00")
+
+    def testKeMpesaMshwariTransferMoneyNotification(self):
+        test_message = 'EB97SA431 Confirmed. Ksh50.00 transferred to M-Shwari account on 13/10/13 at 2:13 AM. M-PESA balance is Ksh4,265.00, new M-Shwari account balance is Ksh20,087.69'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_mshwaritransfer_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "EB97SA431")
+        self.assertEqual(info.sent_amount, "Ksh50.00")
+        self.assertEqual(info.receiver_account, "M-Shwari")
+        self.assertEqual(info.balance, "Ksh4,265.00")
+
+    def testKeMpesaMshwariReceiveMoneyNotification(self):
+        test_message = 'EB87ST824 Confirmed. You have transferred Ksh50.00 from your M-Shwari account on 13/10/13 at 2:14 AM. M-Shwari balance is Ksh20,037.69. M-PESA balance is Ksh4,315.00.'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_mshwarireceive_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "EB87ST824")
+        self.assertEqual(info.received_amount, "Ksh50.00")
+        self.assertEqual(info.sender_account, "M-Shwari")
+        self.assertEqual(info.balance, "Ksh4,315.00")
+
+    def testKeMpesaLipaMpesaReceivedRefundMoneyNotification(self):
+        test_message = 'EE56TY519 confirmed. Your Pay Shop transaction EE56TT315 of 10Ksh has been refunded by 971577 - JUKKA ENTERPRISES. Please contact 971577 - JUKKA ENTERPRISES for more information.  Your account balance is now 47Ksh.'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_lipampesareceiverefund_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "EE56TY519")
+        self.assertEqual(info.received_amount, "10Ksh")
+        self.assertEqual(info.sender_account, "971577 - JUKKA ENTERPRISES")
+        self.assertEqual(info.balance, "47Ksh")
+
+    def testKeMpesaSafaricomReverseMoneyNotification(self):
+        test_message = 'ER30SR746 Confirmed. Transaction EQ47FM754 has been reversed.  Your account balance is now Ksh5,987.00.'
+
+        info = TransactionInfo(test_message, kenya.ke_mpesa_safaricomreverse_money_notification_patterns)
+
+        self.assertEqual(info.transaction_id, "EQ47FM754")
+        self.assertEqual(info.balance, "Ksh5,987.00")
 
 if __name__ == '__main__':
     unittest.main()
